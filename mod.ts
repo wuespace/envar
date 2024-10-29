@@ -1,7 +1,5 @@
-import { getLogger } from "@std/log";
-
 /**
- * @module setup-env
+ * @module
  *
  * This module provides functions to set up environment variables in a Deno application.
  *
@@ -19,6 +17,7 @@ import { getLogger } from "@std/log";
  *
  * If, at that point, the environment variable is not set, the application shall throw an {@link EnvNotSetError}.
  */
+import { getLogger } from "@std/log";
 
 /**
  * Whereas `envVariable` is the name of an environment variable used in the application,
