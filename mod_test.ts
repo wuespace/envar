@@ -296,6 +296,23 @@ Deno.test("initVariable", async (t) => {
 			"Expected the value to be undefined",
 		);
 	});
+
+	await t.step("Single Argument defaults to OPTIONAL", async (t) => {
+		prepare("XXX");
+		await initVariable(ENV_VAR);
+		await assertEquals(
+			Deno.env.get(ENV_VAR),
+			"XXX",
+			"Expected the value to be undefined",
+		);
+		prepare();
+		await initVariable(ENV_VAR);
+		await assertEquals(
+			Deno.env.get(ENV_VAR),
+			undefined,
+			"Expected the value to be undefined",
+		);
+	});
 });
 
 Deno.test("Built-in ZodSchemaCompat Validators", async (t) => {
@@ -332,7 +349,7 @@ Deno.test("Built-in ZodSchemaCompat Validators", async (t) => {
 		[
 			"",
 		],
-	)
+	);
 
 	function testZodSchemaCompatValidator(
 		ctx: Deno.TestContext,

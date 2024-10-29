@@ -56,7 +56,7 @@ export class EnvNotSetError extends Error {
  * 5. Validate the environment variable's value using `validator`.
  *
  * @param envVariable name of the environment variable
- * @param validator Zod schema used to validate the environment variable's value
+ * @param validator Zod schema used to validate the environment variable's value. Defaults to {@link OPTIONAL}.
  * @param defaultValue default value for the environment variable
  *
  * @throws {ConfigParseError} If the final environment variable's value cannot be parsed using `validator`,
@@ -66,7 +66,7 @@ export class EnvNotSetError extends Error {
  */
 export async function initVariable(
   envVariable: string,
-  validator: ZodSchemaCompat,
+  validator: ZodSchemaCompat = OPTIONAL,
   defaultValue?: string,
 ): Promise<void> {
   logger().debug(`(${envVariable}) Setting up environment variable.`, {
