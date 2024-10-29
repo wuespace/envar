@@ -1,6 +1,22 @@
 <!-- markdownlint-disable -->
 # Changelog
 
+## [1.0.0](https://github.com/wuespace/envar/compare/v0.1.0...v1.0.0) (2024-10-29)
+
+
+### Features
+
+* :boom: Replace `[VAR]_PATH` with `[VAR]_FILE` ([a35bb63](https://github.com/wuespace/envar/commit/a35bb6368c5cd20ce1aaddb6726a6ca0ce216b11))
+
+
+### BREAKING CHANGES
+
+* The `[VAR]_PATH` environment variable has been replaced with `[VAR]_FILE`.
+
+
+
+
+
 ## [0.1.0](https://github.com/wuespace/envar/compare/v0.0.4...v0.1.0) (2024-10-29)
 
 
