@@ -132,6 +132,11 @@ export class ConfigFileReadError extends Error {
     this.cause = cause;
   }
 }
+
+/**
+ * An error that gets thrown by {@link initVariable} when the environment variable
+ * cannot be parsed using the Zod schema.
+ */
 export class ConfigParseError extends Error {}
 
 /**
@@ -225,7 +230,10 @@ function logger() {
   return getLogger("@wuespace/envar");
 }
 
-type ZodSchemaCompat = {
+/**
+ * A type that is compatible with Zod schemas.
+ */
+export type ZodSchemaCompat = {
   safeParse: (value: unknown) => { error: Error | null };
   isOptional: () => boolean;
 };
