@@ -10,8 +10,7 @@
 It supports loading configuration from environment variables as well as
 specifying default values.
 It even supports configuration values from files specified by environment
-variables to provide first-class support for secrets and the like in your
-Docker Swarm or Kubernetes deployments.
+variables to provide first-class support for [secrets and the like in your Docker Swarm or Kubernetes deployments](https://docs.docker.com/engine/swarm/secrets/#build-support-for-docker-secrets-into-your-images).
 
 ## 📦 Usage
 
