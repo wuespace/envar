@@ -1,6 +1,7 @@
 import {
 	assertEquals,
 	assertExists,
+	assertFalse,
 	assertIsError,
 	assertNotEquals,
 	assertRejects,
@@ -13,6 +14,8 @@ import {
 	ConfigParseError,
 	EnvNotSetError,
 	initVariable,
+	REQUIRED,
+	type ZodSchemaCompat,
 } from "./mod.ts";
 
 setup({
@@ -290,4 +293,71 @@ Deno.test("initVariable", async (t) => {
 			"Expected the value to be undefined",
 		);
 	});
+});
+
+Deno.test("Built-in ZodSchemaCompat Validators", async (t) => {
+	await testZodSchemaCompatValidator(t, "REQUIRED", REQUIRED, false, [
+		"value",
+		"",
+	]);
+
+	function testZodSchemaCompatValidator(
+		ctx: Deno.TestContext,
+		name: string,
+		validator: ZodSchemaCompat,
+		isOptional: boolean,
+		validValues: string[],
+		invalidValues: string[] = [],
+	) {
+		return ctx.step(name, async (t) => {
+			await t.step("isOptional", () => {
+				assertEquals(
+					validator.isOptional(),
+					isOptional,
+					`Expected isOptional to return ${isOptional}`,
+				);
+			});
+
+			await t.step("safeParse", () => {
+				const NOT_A_STRING = Symbol("not a string");
+				for (const value of validValues) {
+					assertFalse(
+						validator.safeParse(value).error,
+						`Expected "${value}" to be parsed successfully`,
+					);
+				}
+
+				for (const value of invalidValues) {
+					assertIsError(
+						validator.safeParse(value).error,
+						Error,
+						undefined,
+						`Expected "${value}" to produce an error`,
+					);
+				}
+
+				assertIsError(
+					validator.safeParse(NOT_A_STRING as unknown as string)
+						.error,
+					Error,
+					undefined,
+					"Expected a non-string value to produce an error",
+				);
+
+				if (!isOptional) {
+					return assertIsError(
+						validator.safeParse(undefined).error,
+						Error,
+						undefined,
+						"Expected undefined to produce an error for non-optional validator",
+					);
+				}
+
+				assertFalse(
+					validator.safeParse(undefined).error,
+					"Expected undefined to be parsed successfully for optional validator",
+				);
+			});
+		});
+	}
 });
