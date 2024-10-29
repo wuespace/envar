@@ -1,6 +1,17 @@
 <!-- markdownlint-disable -->
 # Changelog
 
+## [0.1.0](https://github.com/wuespace/envar/compare/v0.0.4...v0.1.0) (2024-10-29)
+
+
+### Features
+
+* :bookmark: Initial release ([2b5084c](https://github.com/wuespace/envar/commit/2b5084c559dd11800adb4d5005be7f2d718b2f04))
+
+
+
+
+
 ### [0.0.4](https://github.com/wuespace/envar/compare/v0.0.3...v0.0.4) (2024-10-29)
 
 
