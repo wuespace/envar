@@ -232,4 +232,22 @@ Deno.test("initVariable", async (t) => {
 			"Expected the default value to be used in process.env",
 		);
 	});
+
+	await t.step("No Value", async (t) => {
+		prepare();
+		await assertRejects(
+			() => initVariable(ENV_VAR, REQUIRED_PASSING),
+			ConfigParseError,
+			undefined,
+			"Expected a ConfigParseError when no value is set",
+		);
+
+		prepare();
+		await initVariable(ENV_VAR, OPTIONAL_PASSING);
+		await assertEquals(
+			Deno.env.get(ENV_VAR),
+			undefined,
+			"Expected the value to be undefined",
+		);
+	});
 });
