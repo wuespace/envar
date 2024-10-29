@@ -29,7 +29,12 @@ import { getLogger } from "@std/log";
  */
 export class EnvNotSetError extends Error {
   /**
+   * Create a new {@link EnvNotSetError}.
+   * 
+   * Use this when an environment variable is not set and the application tries to access it.
+   * 
    * @param envVariable name of the environment variable
+   * @param cause the cause of the error, if any
    */
   constructor(public readonly envVariable: string, cause?: unknown) {
     super(
@@ -118,6 +123,12 @@ export async function initVariable(
  * this error shall be thrown when reading the file at the path specified by `pathVariable` fails.
  */
 export class ConfigFileReadError extends Error {
+  /**
+   * Create a new {@link ConfigFileReadError}.
+   * @param envVariable the name of the environment variable
+   * @param pathVariable the name of the environment variable that specifies the path to the file
+   * @param cause the cause of the error
+   */
   constructor(
     public readonly envVariable: string,
     public readonly pathVariable: string,
