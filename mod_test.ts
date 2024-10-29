@@ -135,7 +135,7 @@ Deno.test("initVariable", async (t) => {
 		TEST_FILE && Deno.env.set(ENV_VAR + "_FILE", TEST_FILE);
 	}
 
-	await t.step("Value from Environment", async (t) => {
+	await t.step("Value from Environment", async () => {
 		prepare("value");
 		await initVariable(ENV_VAR, REQUIRED_PASSING);
 		assertEquals(
@@ -201,7 +201,7 @@ Deno.test("initVariable", async (t) => {
 		);
 	});
 
-	await t.step(`Value from ${ENV_VAR}_FILE file`, async (t) => {
+	await t.step(`Value from ${ENV_VAR}_FILE file`, async () => {
 		prepare(undefined, EXISTING_FILE);
 		await initVariable(ENV_VAR, REQUIRED_PASSING);
 		assertExists(
@@ -243,7 +243,7 @@ Deno.test("initVariable", async (t) => {
 		);
 	});
 
-	await t.step("value from default", async (t) => {
+	await t.step("value from default", async () => {
 		prepare();
 		await initVariable(ENV_VAR, REQUIRED_PASSING, DEFAULT_VALUE);
 		assertEquals(
@@ -279,7 +279,7 @@ Deno.test("initVariable", async (t) => {
 		);
 	});
 
-	await t.step("No Value", async (t) => {
+	await t.step("No Value", async () => {
 		prepare();
 		await assertRejects(
 			() => initVariable(ENV_VAR, REQUIRED_PASSING),
@@ -297,7 +297,7 @@ Deno.test("initVariable", async (t) => {
 		);
 	});
 
-	await t.step("Single Argument defaults to OPTIONAL", async (t) => {
+	await t.step("Single Argument defaults to OPTIONAL", async () => {
 		prepare("XXX");
 		await initVariable(ENV_VAR);
 		await assertEquals(
