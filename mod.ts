@@ -299,3 +299,24 @@ export const REQUIRED_NON_EMPTY: ZodSchemaCompat = {
       : new Error(`Expected value to be a non-empty string, but got "${val?.toString()}"`),
   }),
 };
+
+/**
+ * A `ZodSchemaCompat` validator that represents an optional, non-empty variable.
+ * Valid values are non-empty strings or undefined. Any other value is invalid.
+ * 
+ * Useful for projects where you don't need full-blown Zod schemas.
+ * 
+ * @example
+ * ```typescript
+ * import { initVariable, OPTIONAL_NON_EMPTY } from "@wuespace/envar/";
+ * // This will not throw an error if MY_ENV_VAR is an empty string.
+ * await initVariable("MY_ENV_VAR", OPTIONAL_NON_EMPTY);
+ */
+export const OPTIONAL_NON_EMPTY: ZodSchemaCompat = {
+  isOptional: () => true,
+  safeParse: (val) => ({
+    error: typeof val === "string" && val.length > 0 || val === undefined
+      ? undefined
+      : new Error(`Expected value to be a non-empty string or unset, but got "${val?.toString()}"`),
+  }),
+};

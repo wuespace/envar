@@ -15,6 +15,7 @@ import {
 	EnvNotSetError,
 	initVariable,
 	OPTIONAL,
+	OPTIONAL_NON_EMPTY,
 	REQUIRED,
 	REQUIRED_NON_EMPTY,
 	type ZodSchemaCompat,
@@ -319,6 +320,19 @@ Deno.test("Built-in ZodSchemaCompat Validators", async (t) => {
 			"",
 		],
 	);
+	await testZodSchemaCompatValidator(
+		t,
+		"OPTIONAL_NON_EMPTY",
+		OPTIONAL_NON_EMPTY,
+		true,
+		[
+			"value",
+			"xxx",
+		],
+		[
+			"",
+		],
+	)
 
 	function testZodSchemaCompatValidator(
 		ctx: Deno.TestContext,
