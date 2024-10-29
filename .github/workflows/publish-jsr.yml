@@ -1,5 +1,4 @@
-name: Publish to JSR 🚀
-
+name: Publish on JSR
 on:
   push:
     branches:
@@ -7,13 +6,14 @@ on:
 
 jobs:
   publish:
-    name: Publish JSR Package 📦
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
-      id-token: write # The OIDC ID token is used for authentication with JSR.
+      id-token: write
+
     steps:
-      - name: Checkout Repository 🛎️
-        uses: actions/checkout@v4
-      - name: Publish Package 🚀
+      - uses: actions/checkout@v4
+
+      - name: Publish package
         run: npx jsr publish
