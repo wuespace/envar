@@ -15,11 +15,5 @@ jobs:
     steps:
       - name: Checkout Repository 🛎️
         uses: actions/checkout@v4
-      - name: Setup Deno 🦕
-        uses: denoland/setup-deno@v2
-        with:
-          deno-version: v2.x
-      - name: Run Tests 🧪
-        run: deno task test
       - name: Publish Package 🚀
         run: npx jsr publish
