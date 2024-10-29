@@ -16,6 +16,7 @@ import {
 	initVariable,
 	OPTIONAL,
 	REQUIRED,
+	REQUIRED_NON_EMPTY,
 	type ZodSchemaCompat,
 } from "./mod.ts";
 
@@ -304,7 +305,20 @@ Deno.test("Built-in ZodSchemaCompat Validators", async (t) => {
 	await testZodSchemaCompatValidator(t, "OPTIONAL", OPTIONAL, true, [
 		"value",
 		"",
-	])
+	]);
+	await testZodSchemaCompatValidator(
+		t,
+		"REQUIRED_NON_EMPTY",
+		REQUIRED_NON_EMPTY,
+		false,
+		[
+			"value",
+			"xxx",
+		],
+		[
+			"",
+		],
+	);
 
 	function testZodSchemaCompatValidator(
 		ctx: Deno.TestContext,
