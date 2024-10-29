@@ -94,6 +94,35 @@ await initVariable("SECRET", z.string(), 'xxx');
 await initVariable("SECRET", z.string().optional()); 
 ```
 
+## 🔧 Built-in Validators
+
+> [!NOTE]
+> This feature is available starting from version v1.1.0.
+
+Envar provides several built-in validators to simplify common validation tasks:
+
+- `REQUIRED` - Ensures the variable is set and not `undefined`
+- `OPTIONAL` - Allows the variable to be `undefined`
+- `REQUIRED_NON_EMPTY` - Ensures the variable is set and not an empty string
+- `OPTIONAL_NON_EMPTY` - Allows the variable to be `undefined` or a non-empty string
+
+Here's how you can use these validators:
+
+```ts
+import {
+  initVariable,
+  REQUIRED,
+  OPTIONAL,
+  REQUIRED_NON_EMPTY,
+  OPTIONAL_NON_EMPTY,
+} from "jsr:@wuespace/envar";
+
+await initVariable("REQUIRED", REQUIRED); // Must be set
+await initVariable("OPTIONAL", OPTIONAL); // Can be undefined
+await initVariable("REQUIRED_NON_EMPTY", REQUIRED_NON_EMPTY); // Must be set and not empty
+await initVariable("OPTIONAL_NON_EMPTY", OPTIONAL_NON_EMPTY); // Can be undefined or non-empty
+```
+
 ## 🚀 Deployment Options
 
 Due to Envar's flexible source system, you have multiple options for deploying your application. We'll demonstrate these with a Docker Compose configuration, but the same principles apply to other deployment methods as well.
