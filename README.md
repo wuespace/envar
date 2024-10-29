@@ -138,7 +138,10 @@ secrets:
 
 configs:
   my-service-config:
-    file: ./config.json # Loaded from a file
+      content: |
+        {
+          "key": "value"
+        }
 ```
 
 This configuration ensures that your application variables are securely managed and validated, leveraging Docker's secrets and configs features.
