@@ -1,6 +1,6 @@
 {
   "name": "@wuespace/envar",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "exports": "./mod.ts",
   "license": "MIT",
   "publish": {
