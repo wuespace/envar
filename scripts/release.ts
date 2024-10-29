@@ -19,7 +19,7 @@ if (status.stdout.length !== 0) {
 	Deno.exit(1);
 }
 
-info("Running tests");
+info("> Running tests");
 
 if (
 	!new Deno.Command("deno", {
@@ -29,6 +29,43 @@ if (
 	}).outputSync().success
 ) {
 	critical("Tests failed");
+	Deno.exit(1);
+}
+
+info("Tests passed");
+info("> Type-checking");
+if (
+	!new Deno.Command("deno", {
+		args: ["check", "**/*.ts"],
+		stdout: "inherit",
+		"stderr": "inherit",
+	}).outputSync().success
+) {
+	critical("Type-checking failed");
+	Deno.exit(1);
+}
+info("Type-checking passed");
+info("> Linting");
+if (
+	!new Deno.Command("deno", {
+		args: ["lint"],
+		stdout: "inherit",
+		"stderr": "inherit",
+	}).outputSync().success
+) {
+	critical("Linting failed");
+	Deno.exit(1);
+}
+info("Linting passed");
+info("> Linting Documentation");
+if (
+	!new Deno.Command("deno", {
+		args: ["doc", "--lint", "**/*.ts"],
+		stdout: "inherit",
+		"stderr": "inherit",
+	}).outputSync().success
+) {
+	critical("Linting Documentation failed");
 	Deno.exit(1);
 }
 
@@ -52,7 +89,7 @@ const newVersion = format(increment(parse(currentVersion), bump.releaseType));
 
 info(`Bumping version from ${currentVersion} to ${newVersion}`);
 
-info("Updating deno.json");
+info("> Updating deno.json");
 
 Deno.writeTextFile(
 	"./deno.json",
@@ -67,7 +104,7 @@ Deno.writeTextFile(
 );
 
 info("Updated deno.json");
-info("Generating changelog");
+info("> Generating changelog");
 
 const changelog = await new Promise<string>((resolve, reject) => {
 	let data = "#";
@@ -93,6 +130,7 @@ const newChangelog = oldChangelog.replace(
 Deno.writeTextFile("./CHANGELOG.md", newChangelog);
 
 info("Updated CHANGELOG.md");
+info("> Adding files to git");
 if (
 	!new Deno.Command("git", {
 		args: ["add", "deno.json", "CHANGELOG.md"],
@@ -106,6 +144,7 @@ if (
 
 info("Added files to git");
 
+info("> Committing changes");
 if (
 	!new Deno.Command("git", {
 		args: ["commit", "-m", `chore(release): Release v${newVersion} 🚀`],
@@ -118,10 +157,17 @@ if (
 }
 
 info("Committed changes");
+info("> Tagging release");
 
 if (
 	!new Deno.Command("git", {
-		args: ["tag", `v${newVersion}`],
+		args: [
+			"tag",
+			"-a",
+			`v${newVersion}`,
+			"-m",
+			changelog.split("\n").slice(1).join("\n"),
+		],
 		stdout: "inherit",
 		"stderr": "inherit",
 	}).outputSync().success
@@ -131,3 +177,5 @@ if (
 }
 
 info("Tagged release");
+info("Release complete 🚀");
+info("Run `git push --follow-tags` to push changes to the remote repository");
