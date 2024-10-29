@@ -60,17 +60,57 @@ const REQUIRED_FAILING = {
 Deno.test("EnvNotSetError", async (t) => {
 	await t.step("without cause", () => {
 		const err = new EnvNotSetError("TEST");
-		assertStringIncludes(err.message, "TEST");
-		assertStringIncludes(err.message, "TEST_FILE");
-		assertIsError(err);
+		assertStringIncludes(
+			err.message,
+			"TEST",
+			"Expected the message to contain the env variable name",
+		);
+		assertStringIncludes(
+			err.message,
+			"TEST_FILE",
+			"Expected the message to contain a note about setting the variable using TEST_FILE",
+		);
+		assertEquals(
+			err.envVariable,
+			"TEST",
+			"Expected the envVariable to be set correctly",
+		);
+		assertIsError(
+			err,
+			EnvNotSetError,
+			undefined,
+			"Expected the error to be an Error instance of EnvNotSetError",
+		);
 	});
 
 	await t.step("with cause", () => {
 		const err = new EnvNotSetError("TEST", new Error("cause"));
-		assertStringIncludes(err.message, "TEST");
-		assertStringIncludes(err.message, "TEST_FILE");
-		assertEquals(err.cause, new Error("cause"));
-		assertIsError(err);
+		assertStringIncludes(
+			err.message,
+			"TEST",
+			"Expected the message to contain the env variable name",
+		);
+		assertStringIncludes(
+			err.message,
+			"TEST_FILE",
+			"Expected the message to contain a note about setting the variable using TEST_FILE",
+		);
+		assertEquals(
+			err.envVariable,
+			"TEST",
+			"Expected the envVariable to be set correctly",
+		);
+		assertEquals(
+			err.cause,
+			new Error("cause"),
+			"Expected the cause to be set correctly",
+		);
+		assertIsError(
+			err,
+			EnvNotSetError,
+			undefined,
+			"Expected the error to be an Error instance of EnvNotSetError",
+		);
 	});
 });
 

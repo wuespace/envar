@@ -32,7 +32,7 @@ export class EnvNotSetError extends Error {
   /**
    * @param envVariable name of the environment variable
    */
-  constructor(envVariable: string, cause?: unknown) {
+  constructor(public readonly envVariable: string, cause?: unknown) {
     super(
       `Environment variable ${envVariable} is not set.\n` +
         `You can also set it by specifying a path to a file ` +
