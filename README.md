@@ -86,6 +86,64 @@ await initVariable("SECRET", z.string(), 'xxx');
 await initVariable("SECRET", z.string().optional()); 
 ```
 
+## 🚀 Deployment Options
+
+Due to Envar's flexible source system, you have multiple options for deploying your application. We'll demonstrate these with a Docker Compose configuration, but the same principles apply to other deployment methods as well.
+
+### 💻 Application
+
+```ts
+await initVariable("PORT", z.string().match(/^[0-9]{1,5}$/), "8080");
+await initVariable("OAUTH_TOKEN", z.string());
+await initVariable("DB_URI", z.string().url());
+await initVariable("SECRET", z.string());
+await initVariable("CONFIG", z.string());
+await initVariable("ANOTHER_SECRET", z.string());
+
+const rawConfig = Deno.env.get("CONFIG");
+if (rawConfig == undefined) {
+    throw new EnvNotSetError("CONFIG");
+}
+const config = JSON.parse(rawConfig);
+console.log(config); // { key: "value" }
+```
+
+### 🐳 Docker Compose
+
+```yaml
+name: My Application
+
+services:
+  my-service:
+    image: my-service
+    environment:
+      - PORT # Loaded from environment. Defaults to 8080 if not set
+      - SECRET_PATH=/run/secrets/my-secret # Mounted as secret file
+      - OAUTH_TOKEN_PATH=/run/secrets/another-secret # Mounted as secret file
+      - CONFIG_PATH=/run/configs/my-service-config # Mounted as config file
+      - DB_URI=${DB_URI:-mongodb://mongo:27017/my-database} # Default value
+      - ANOTHER_SECRET=${ANOTHER_SECRET:?ANOTHER_SECRET is required} # Required variable
+    secrets:
+      - my-secret
+      - another-secret
+    configs:
+      - my-service-config
+  mongo:
+    image: mongo
+
+secrets:
+  my-secret:
+    file: ./secret.txt # Loaded from a file
+  another-secret:
+    environment: "OAUTH_TOKEN" # Loaded from an environment variable
+
+configs:
+  my-service-config:
+    file: ./config.json # Loaded from a file
+```
+
+This configuration ensures that your application variables are securely managed and validated, leveraging Docker's secrets and configs features.
+
 ## 👥 Authors
 
 This package was created and is maintained by [WüSpace e. V.](https://github.com/wuespace)
