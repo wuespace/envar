@@ -61,14 +61,14 @@ Deno.test("EnvNotSetError", async (t) => {
 	await t.step("without cause", () => {
 		const err = new EnvNotSetError("TEST");
 		assertStringIncludes(err.message, "TEST");
-		assertStringIncludes(err.message, "TEST_PATH");
+		assertStringIncludes(err.message, "TEST_FILE");
 		assertIsError(err);
 	});
 
 	await t.step("with cause", () => {
 		const err = new EnvNotSetError("TEST", new Error("cause"));
 		assertStringIncludes(err.message, "TEST");
-		assertStringIncludes(err.message, "TEST_PATH");
+		assertStringIncludes(err.message, "TEST_FILE");
 		assertEquals(err.cause, new Error("cause"));
 		assertIsError(err);
 	});
@@ -82,11 +82,11 @@ Deno.test("initVariable", async (t) => {
 
 	const DEFAULT_VALUE = "default";
 
-	function prepare(TEST?: string, TEST_PATH?: string) {
+	function prepare(TEST?: string, TEST_FILE?: string) {
 		Deno.env.delete(ENV_VAR);
-		Deno.env.delete(ENV_VAR + "_PATH");
+		Deno.env.delete(ENV_VAR + "_FILE");
 		TEST && Deno.env.set(ENV_VAR, TEST);
-		TEST_PATH && Deno.env.set(ENV_VAR + "_PATH", TEST_PATH);
+		TEST_FILE && Deno.env.set(ENV_VAR + "_FILE", TEST_FILE);
 	}
 
 	await t.step("Value from Environment", async (t) => {
@@ -134,12 +134,12 @@ Deno.test("initVariable", async (t) => {
 		assertEquals(
 			Deno.env.get(ENV_VAR),
 			"value",
-			`Expected the Environment Variable to take precedence over the ${ENV_VAR}_PATH file`,
+			`Expected the Environment Variable to take precedence over the ${ENV_VAR}_FILE file`,
 		);
 		assertEquals(
 			process.env[ENV_VAR],
 			"value",
-			`Expected the Environment Variable to take precedence over the ${ENV_VAR}_PATH file in process.env`,
+			`Expected the Environment Variable to take precedence over the ${ENV_VAR}_FILE file in process.env`,
 		);
 		prepare("value2");
 		await initVariable(ENV_VAR, REQUIRED_PASSING, DEFAULT_VALUE);
@@ -155,16 +155,16 @@ Deno.test("initVariable", async (t) => {
 		);
 	});
 
-	await t.step(`Value from ${ENV_VAR}_PATH file`, async (t) => {
+	await t.step(`Value from ${ENV_VAR}_FILE file`, async (t) => {
 		prepare(undefined, EXISTING_FILE);
 		await initVariable(ENV_VAR, REQUIRED_PASSING);
 		assertExists(
 			Deno.env.get(ENV_VAR),
-			`Expected the value to be filled from the ${ENV_VAR}_PATH file`,
+			`Expected the value to be filled from the ${ENV_VAR}_FILE file`,
 		);
 		assertExists(
 			process.env[ENV_VAR],
-			`Expected the value to be filled from the ${ENV_VAR}_PATH file in process.env`,
+			`Expected the value to be filled from the ${ENV_VAR}_FILE file in process.env`,
 		);
 
 		prepare(undefined, EXISTING_FILE);
@@ -188,12 +188,12 @@ Deno.test("initVariable", async (t) => {
 		assertNotEquals(
 			Deno.env.get(ENV_VAR),
 			DEFAULT_VALUE,
-			`Expected the ${ENV_VAR}_PATH file to take precedence over the default value`,
+			`Expected the ${ENV_VAR}_FILE file to take precedence over the default value`,
 		);
 		assertNotEquals(
 			process.env[ENV_VAR],
 			DEFAULT_VALUE,
-			`Expected the ${ENV_VAR}_PATH file to take precedence over the default value in process.env`,
+			`Expected the ${ENV_VAR}_FILE file to take precedence over the default value in process.env`,
 		);
 	});
 

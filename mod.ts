@@ -8,7 +8,7 @@ import { getLogger } from "@std/log";
  * The main function in this module is {@link initVariable}, which sets up an environment variable.
  * The variable can have three different sources:
  * 1. The environment variable itself;
- * 2. A file specified by another environment variable with the name `[variable]_PATH`; or
+ * 2. A file specified by another environment variable with the name `[variable]_FILE`; or
  * 3. A default value.
  *
  * The environment variable takes precedence over the file, which takes precedence over the default value.
@@ -36,7 +36,7 @@ export class EnvNotSetError extends Error {
     super(
       `Environment variable ${envVariable} is not set.\n` +
         `You can also set it by specifying a path to a file ` +
-        `with its value using ${envVariable}_PATH.`,
+        `with its value using ${envVariable}_FILE.`,
     );
     this.cause = cause;
   }
@@ -51,8 +51,8 @@ export class EnvNotSetError extends Error {
  * this function will:
  *
  * 1. Look for the environment variable `envVariable`;
- * 2. If it is not set, try to set it by reading the file specified by `${envVariable}_PATH`;
- * 3. If `${envVariable}_PATH` is not set, set the environment variable to `defaultValue`;
+ * 2. If it is not set, try to set it by reading the file specified by `${envVariable}_FILE`;
+ * 3. If `${envVariable}_FILE` is not set, set the environment variable to `defaultValue`;
  * 4. If `defaultValue` is undefined, delete the environment variable;
  * 5. Validate the environment variable's value using `validator`.
  *
@@ -62,7 +62,7 @@ export class EnvNotSetError extends Error {
  *
  * @throws {ConfigParseError} If the final environment variable's value cannot be parsed using `validator`,
  * this function will throw a `ConfigParseError`.
- * @throws {ConfigFileReadError} If the file at the path specified by `${envVariable}_PATH` cannot be read,
+ * @throws {ConfigFileReadError} If the file at the path specified by `${envVariable}_FILE` cannot be read,
  * this function will throw a `ConfigFileReadError`.
  */
 export async function initVariable(
@@ -78,7 +78,7 @@ export async function initVariable(
   let source = `Environment variable ${envVariable}`;
 
   if (!Deno.env.get(envVariable)) {
-    source = `File from ${envVariable}_PATH`;
+    source = `File from ${envVariable}_FILE`;
     await setFromFile(envVariable);
   }
 
@@ -169,18 +169,18 @@ function setFromDefault(envVariable: string, defaultValue?: string) {
 /**
  * Whereas `envVariable` is the name of an environment variable currently not set, this function will:
  *
- * 1. Look for an environment variable named `${envVariable}_PATH`.
- * 2. If it exists, read the file at the path specified by `${envVariable}_PATH`.
+ * 1. Look for an environment variable named `${envVariable}_FILE`.
+ * 2. If it exists, read the file at the path specified by `${envVariable}_FILE`.
  * 3. Set the environment variable `envVariable` to the contents of the file.
  *
- * If `${envVariable}_PATH` is not set, this function will do nothing.
- * @throws {ConfigFileReadError} If the file at the path specified by `${envVariable}_PATH` cannot be read,
+ * If `${envVariable}_FILE` is not set, this function will do nothing.
+ * @throws {ConfigFileReadError} If the file at the path specified by `${envVariable}_FILE` cannot be read,
  * this function will throw a `ConfigFileReadError`.
  *
  * @param envVariable name of the environment variable
  */
 async function setFromFile(envVariable: string): Promise<void> {
-  const pathVariable = `${envVariable}_PATH`;
+  const pathVariable = `${envVariable}_FILE`;
 
   logger().debug(
     `(${envVariable}) Trying to read environment variable from file.`,
@@ -190,11 +190,11 @@ async function setFromFile(envVariable: string): Promise<void> {
     },
   );
 
-  const configValuePath = Deno.env.get(`${envVariable}_PATH`);
+  const configValuePath = Deno.env.get(`${envVariable}_FILE`);
 
   if (!configValuePath) {
     logger().debug(
-      `(${envVariable}) No ${envVariable}_PATH environment variable set. Skipping.`,
+      `(${envVariable}) No ${envVariable}_FILE environment variable set. Skipping.`,
     );
     return; // No file to read
   }

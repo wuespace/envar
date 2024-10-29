@@ -63,7 +63,7 @@ First, Envar checks if an environment variable named `PORT` exists. If it does, 
 
 ### 📂 Files
 
-If the `PORT` environment variable is not found, Envar looks for a variable named `PORT_PATH`. If `PORT_PATH` exists, Envar reads the file specified by this variable and uses its contents as the value for `PORT`.
+If the `PORT` environment variable is not found, Envar looks for a variable named `PORT_FILE`. If `PORT_FILE` exists, Envar reads the file specified by this variable and uses its contents as the value for `PORT`.
 
 ### 🛠️ Defaults
 
@@ -118,9 +118,9 @@ services:
     image: my-service
     environment:
       - PORT # Loaded from environment. Defaults to 8080 if not set
-      - SECRET_PATH=/run/secrets/my-secret # Mounted as secret file
-      - OAUTH_TOKEN_PATH=/run/secrets/another-secret # Mounted as secret file
-      - CONFIG_PATH=/run/configs/my-service-config # Mounted as config file
+      - SECRET_FILE=/run/secrets/my-secret # Mounted as secret file
+      - OAUTH_TOKEN_FILE=/run/secrets/another-secret # Mounted as secret file
+      - CONFIG_FILE=/run/configs/my-service-config # Mounted as config file
       - DB_URI=${DB_URI:-mongodb://mongo:27017/my-database} # Default value
       - ANOTHER_SECRET=${ANOTHER_SECRET:?ANOTHER_SECRET is required} # Required variable
     secrets:
