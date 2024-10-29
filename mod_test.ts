@@ -116,13 +116,13 @@ Deno.test("initVariable", async (t) => {
 		);
 
 		prepare("value");
-		assertRejects(
+		await assertRejects(
 			() => initVariable(ENV_VAR, REQUIRED_FAILING),
 			ConfigParseError,
 			undefined,
 			"Expected a ConfigParseError when the value cannot be parsed",
 		);
-		assertRejects(
+		await assertRejects(
 			() => initVariable(ENV_VAR, OPTIONAL_FAILING),
 			ConfigParseError,
 			undefined,
@@ -168,7 +168,7 @@ Deno.test("initVariable", async (t) => {
 		);
 
 		prepare(undefined, EXISTING_FILE);
-		assertRejects(
+		await assertRejects(
 			() => initVariable(ENV_VAR, REQUIRED_FAILING),
 			ConfigParseError,
 			undefined,
@@ -176,7 +176,7 @@ Deno.test("initVariable", async (t) => {
 		);
 
 		prepare(undefined, NONEXISTING_FILE);
-		assertRejects(
+		await assertRejects(
 			() => initVariable(ENV_VAR, REQUIRED_PASSING),
 			ConfigFileReadError,
 			undefined,
@@ -212,7 +212,7 @@ Deno.test("initVariable", async (t) => {
 		);
 
 		prepare();
-		assertRejects(
+		await assertRejects(
 			() => initVariable(ENV_VAR, REQUIRED_FAILING, DEFAULT_VALUE),
 			ConfigParseError,
 			undefined,
