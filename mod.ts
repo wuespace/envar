@@ -234,6 +234,6 @@ function logger() {
  * A type that is compatible with Zod schemas.
  */
 export type ZodSchemaCompat = {
-  safeParse: (value: unknown) => { error: Error | null | undefined };
+  safeParse: (value?: string) => { error: Error | null | undefined };
   isOptional: () => boolean;
 };
