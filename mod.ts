@@ -257,3 +257,24 @@ export const REQUIRED: ZodSchemaCompat = {
       : new Error(`Expected value to be a string, but got ${typeof val}`),
   }),
 };
+
+/**
+ * A `ZodSchemaCompat` validator that represents an optional variable.
+ * 
+ * Useful for projects where you don't need full-blown Zod schemas.
+ * 
+ * @example
+ * ```typescript
+ * import { initVariable, OPTIONAL } from "@wuespace/envar/";
+ * // This will not throw an error if MY_ENV_VAR is not set in one of the sources.
+ * await initVariable("MY_ENV_VAR", OPTIONAL);
+ * ```
+ */
+export const OPTIONAL: ZodSchemaCompat = {
+  isOptional: () => true,
+  safeParse: (val) => ({
+    error: typeof val === "string" || val === undefined
+      ? undefined
+      : new Error(`Expected value to be a string, but got ${typeof val}`),
+  }),
+};

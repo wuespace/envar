@@ -14,6 +14,7 @@ import {
 	ConfigParseError,
 	EnvNotSetError,
 	initVariable,
+	OPTIONAL,
 	REQUIRED,
 	type ZodSchemaCompat,
 } from "./mod.ts";
@@ -300,6 +301,10 @@ Deno.test("Built-in ZodSchemaCompat Validators", async (t) => {
 		"value",
 		"",
 	]);
+	await testZodSchemaCompatValidator(t, "OPTIONAL", OPTIONAL, true, [
+		"value",
+		"",
+	])
 
 	function testZodSchemaCompatValidator(
 		ctx: Deno.TestContext,
