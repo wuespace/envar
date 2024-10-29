@@ -45,6 +45,47 @@ if (port == undefined) {
 console.log(process.env.PORT);
 ```
 
+## 🔍 Variable Sources
+
+But why does `initVariable` return a `Promise`? Because Envar doesn't just look at environment variables. It also supports loading variables from files. This asynchronous behavior ensures that all potential sources are checked and validated before the variable is set.
+
+Let's illustrate this with an example:
+
+```ts
+await initVariable("PORT", z.string().match(/^[0-9]{1,5}$/), "8080");
+```
+
+This call attempts to load the `PORT` variable from the following sources, in order:
+
+### 🌐 Environment Variables
+
+First, Envar checks if an environment variable named `PORT` exists. If it does, the value is validated and used.
+
+### 📂 Files
+
+If the `PORT` environment variable is not found, Envar looks for a variable named `PORT_PATH`. If `PORT_PATH` exists, Envar reads the file specified by this variable and uses its contents as the value for `PORT`.
+
+### 🛠️ Defaults
+
+If neither an environment variable nor a file is found, the default value specified in the `initVariable` call (`"8080"` in this case) is used.
+
+### 🚨 Validation
+
+Regardless of the source, the value is validated using the `validator` provided in the `initVariable` call, which is typically a zod schema. If the value is invalid, an error is thrown, and the application should handle it accordingly.
+
+The `validator` can also specify whether the variable can be `undefined` (if no value is found and there is no default value):
+
+```ts
+// Throws an error if the variable isn't set
+await initVariable("SECRET", z.string()); 
+
+// Uses the default value if SECRET is not set
+await initVariable("SECRET", z.string(), 'xxx'); 
+
+// Allows SECRET to be undefined without throwing an error
+await initVariable("SECRET", z.string().optional()); 
+```
+
 ## 👥 Authors
 
 This package was created and is maintained by [WüSpace e. V.](https://github.com/wuespace)
