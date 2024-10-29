@@ -3,13 +3,12 @@
   "version": "0.0.1",
   "exports": "./mod.ts",
   "license": "MIT",
-  "scopes": {
-  },
   "publish": {
     "include": [
       "mod.ts",
       "LICENSE",
-      "README.md"
+      "README.md",
+      "CHANGELOG.md"
     ]
   },
   "tasks": {
