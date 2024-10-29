@@ -22,4 +22,4 @@ jobs:
       - name: Run Tests 🧪
         run: deno task test
       - name: Publish Package 🚀
-        run: deno publish
+        run: npx jsr publish
