@@ -1,0 +1,23 @@
+{
+  "name": "@wuespace/envar",
+  "version": "0.0.1",
+  "exports": "./mod.ts",
+  "license": "MIT",
+  "scopes": {
+  },
+  "publish": {
+    "include": [
+      "mod.ts",
+      "LICENSE",
+      "README.md"
+    ]
+  },
+  "tasks": {
+    "dev": "deno task test --watch",
+    "test": "deno test --allow-env --allow-read --allow-write"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1",
+    "@std/log": "jsr:@std/log@^0.224.9"
+  }
+}

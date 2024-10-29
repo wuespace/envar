@@ -1,0 +1,23 @@
+name: Deno CI 🦕
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  publish:
+    name: Run Deno Tests 🧪
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository 🛎️
+        uses: actions/checkout@v4
+      - name: Setup Deno Environment 🦕
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Execute Tests 🧪
+        run: deno task test
