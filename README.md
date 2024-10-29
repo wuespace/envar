@@ -17,6 +17,9 @@ variables to provide first-class support for [secrets and the like in your Docke
 You can use Envar in your Deno application by importing it from the
 `jsr:@wuespace/envar` module.
 
+> [!NOTE]
+> When you want to use envar in a bigger application, you should consider installing it using `deno add jsr:@wuespace/envar` to make sure you have a fixed version.
+
 ```tsx
 // Import the initVariable function from the module
 import { initVariable, EnvNotSetError } from "jsr:@wuespace/envar";
@@ -44,6 +47,9 @@ if (port == undefined) {
 console.log(process.env.PORT);
 ```
 
+> [!WARNING]
+> Do not access `Deno.env.get()` or similar functions at the top level of another module. Due to the import order, the environment variables may not have been initialized at that point. However, accessing the environment variable on-demand inside functions is not a big issue, as it is a synchronous operation.
+
 ## 🔍 Variable Sources
 
 But why does `initVariable` return a `Promise`? Because Envar doesn't just look at environment variables. It also supports loading variables from files. This asynchronous behavior ensures that all potential sources are checked and validated before the variable is set.
@@ -63,6 +69,9 @@ First, Envar checks if an environment variable named `PORT` exists. If it does, 
 ### 📂 Files
 
 If the `PORT` environment variable is not found, Envar looks for a variable named `PORT_FILE`. If `PORT_FILE` exists, Envar reads the file specified by this variable and uses its contents as the value for `PORT`.
+
+> [!TIP]
+> This follows the convention described in the [Docker Secrets documentation](https://docs.docker.com/engine/swarm/secrets/#build-support-for-docker-secrets-into-your-images).
 
 ### 🛠️ Defaults
 
