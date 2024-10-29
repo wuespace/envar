@@ -120,7 +120,7 @@ services:
       - PORT # Loaded from environment. Defaults to 8080 if not set
       - SECRET_FILE=/run/secrets/my-secret # Mounted as secret file
       - OAUTH_TOKEN_FILE=/run/secrets/another-secret # Mounted as secret file
-      - CONFIG_FILE=/run/configs/my-service-config # Mounted as config file
+      - CONFIG_FILE=/my-service-config # Mounted as config file
       - DB_URI=${DB_URI:-mongodb://mongo:27017/my-database} # Default value
       - ANOTHER_SECRET=${ANOTHER_SECRET:?ANOTHER_SECRET is required} # Required variable
     secrets:
