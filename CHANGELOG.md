@@ -1,6 +1,17 @@
 <!-- markdownlint-disable -->
 # Changelog
 
+### [1.1.1](https://github.com/wuespace/envar/compare/v1.1.0...v1.1.1) (2024-12-07)
+
+
+### Bug Fixes
+
+* :ambulance: Fix `ZodSchemaCompat` type incompatibility with zod ([9636fbd](https://github.com/wuespace/envar/commit/9636fbdf1a3464f4b17e7835d173d3346a2c7335))
+
+
+
+
+
 ## [1.1.0](https://github.com/wuespace/envar/compare/v1.0.1...v1.1.0) (2024-10-29)
 
 
