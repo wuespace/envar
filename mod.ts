@@ -30,9 +30,9 @@ import { getLogger } from "@std/log";
 export class EnvNotSetError extends Error {
   /**
    * Create a new {@link EnvNotSetError}.
-   * 
+   *
    * Use this when an environment variable is not set and the application tries to access it.
-   * 
+   *
    * @param envVariable name of the environment variable
    * @param cause the cause of the error, if any
    */
@@ -244,7 +244,7 @@ function logger() {
  * A type that is compatible with Zod schemas.
  */
 export type ZodSchemaCompat = {
-  safeParse: (value?: string) => { error: Error | null | undefined };
+  safeParse: (value?: string) => { error?: Error };
   isOptional: () => boolean;
 };
 
@@ -271,9 +271,9 @@ export const REQUIRED: ZodSchemaCompat = {
 
 /**
  * A `ZodSchemaCompat` validator that represents an optional variable.
- * 
+ *
  * Useful for projects where you don't need full-blown Zod schemas.
- * 
+ *
  * @example
  * ```typescript
  * import { initVariable, OPTIONAL } from "@wuespace/envar/";
@@ -292,9 +292,9 @@ export const OPTIONAL: ZodSchemaCompat = {
 
 /**
  * A `ZodSchemaCompat` validator that represents a required, non-empty variable.
- * 
+ *
  * Useful for projects where you don't need full-blown Zod schemas.
- * 
+ *
  * @example
  * ```typescript
  * import { initVariable, REQUIRED_NON_EMPTY } from "@wuespace/envar/";
@@ -307,16 +307,18 @@ export const REQUIRED_NON_EMPTY: ZodSchemaCompat = {
   safeParse: (val) => ({
     error: typeof val === "string" && val.length > 0
       ? undefined
-      : new Error(`Expected value to be a non-empty string, but got "${val?.toString()}"`),
+      : new Error(
+        `Expected value to be a non-empty string, but got "${val?.toString()}"`,
+      ),
   }),
 };
 
 /**
  * A `ZodSchemaCompat` validator that represents an optional, non-empty variable.
  * Valid values are non-empty strings or undefined. Any other value is invalid.
- * 
+ *
  * Useful for projects where you don't need full-blown Zod schemas.
- * 
+ *
  * @example
  * ```typescript
  * import { initVariable, OPTIONAL_NON_EMPTY } from "@wuespace/envar/";
@@ -328,6 +330,8 @@ export const OPTIONAL_NON_EMPTY: ZodSchemaCompat = {
   safeParse: (val) => ({
     error: typeof val === "string" && val.length > 0 || val === undefined
       ? undefined
-      : new Error(`Expected value to be a non-empty string or unset, but got "${val?.toString()}"`),
+      : new Error(
+        `Expected value to be a non-empty string or unset, but got "${val?.toString()}"`,
+      ),
   }),
 };

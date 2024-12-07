@@ -46,7 +46,7 @@ const PARSE_ERROR = new Error("parse error");
 
 const OPTIONAL_PASSING = {
 	isOptional: () => true,
-	safeParse: () => ({ error: null }),
+	safeParse: () => ({ error: undefined }),
 };
 const OPTIONAL_FAILING = {
 	isOptional: () => true,
@@ -55,7 +55,7 @@ const OPTIONAL_FAILING = {
 const REQUIRED_PASSING = {
 	isOptional: () => false,
 	safeParse: (val: unknown) => ({
-		error: typeof val === "string" ? null : PARSE_ERROR,
+		error: typeof val === "string" ? undefined : PARSE_ERROR,
 	}),
 };
 const REQUIRED_FAILING = {
